@@ -88,16 +88,14 @@
     $.fn.CopyClip({
       onCopy: function(text, el) {
         $.fn.stackAlert({
-          text: 'Testo copiato: ' + text,
-          theme: 'success',
-          icon: 'fa-check-circle'
+          message: 'Testo copiato: ' + text,
+          type: 'success'
         });
       },
       onError: function(err, el) {
         $.fn.stackAlert({
-          text: 'Errore copia: ' + err,
-          theme: 'danger',
-          icon: 'fa-exclamation-circle'
+          message: 'Errore copia: ' + err,
+          type: 'danger'
         });
       }
     });
