@@ -1,0 +1,15 @@
+Licenza / License
+
+Copyright (c) 2025 FVLogika
+
+IT: Questo progetto è distribuito sotto la Licenza MIT.
+È consentito l’uso, la copia, la modifica, la fusione, la pubblicazione, la distribuzione, la sublicenza e/o la vendita del Software, a condizione che il copyright e la presente dichiarazione siano inclusi in tutte le copie.
+
+EN: This project is licensed under the MIT License.
+Permission is granted to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, provided that the copyright notice and this permission notice are included in all copies.
+
+Il software è fornito "COSÌ COM'È", senza garanzie di alcun tipo, espresse o implicite.
+The software is provided "AS IS", without warranty of any kind, express or implied.
+
+Autore / Author: FVLogika
+Repo: https://github.com/FVLogika/CopyClip
