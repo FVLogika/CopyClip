@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CopyClip Demo Bilingue</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/FVLogika/CopyClip/copyclip.min.js"></script>
+  <style>
+    body { font-family: sans-serif; margin: 2em; }
+    .copy { cursor: pointer; color: blue; text-decoration: underline; }
+    #lang-switch { margin-bottom: 1em; }
+    .hidden { display: none; }
+    .added { margin-top: 1em; padding: 0.5em; background: #f0f0f0; }
+  </style>
+</head>
+<body>
+
+  <label id="lang-switch">
+    <input type="checkbox" id="toggle-lang" /> Italiano / English
+  </label>
+
+  <!-- Italian Section -->
+  <div id="content-it">
+    <h2>Esempi Copia (IT)</h2>
+    <button class="copy">Codice segreto <cc-text>IT-ABC123</cc-text></button>
+    <span class="copy">clicca qui <cc-text>IT-Testo nascosto</cc-text></span>
+    <p>Questo è un paragrafo <cc-text>non copiabile</cc-text></p>
+  </div>
+
+  <!-- English Section -->
+  <div id="content-en" class="hidden">
+    <h2>Copy Examples (EN)</h2>
+    <button class="copy">Secret code <cc-text>EN-ABC123</cc-text></button>
+    <span class="copy">click here <cc-text>EN-hidden text</cc-text></span>
+    <h1>This is a heading <cc-text>not copyable</cc-text></h1>
+  </div>
+
+  <button id="add-dynamic">➕ Aggiungi elemento dinamico</button>
+  <div id="dynamic-zone"></div>
+
+  <script>
+    // Initialize CopyClip
+    $(function(){
+      $.fn.CopyClip({
+        onCopy: function(text, el) {
+          alert('Testo copiato: ' + text);
+        },
+        onError: function(err, el) {
+          console.error('Errore di copia:', err);
+        }
+      });
+
+      // Language switch
+      $('#toggle-lang').on('change', function() {
+        $('#content-it, #content-en').toggleClass('hidden');
+      });
+
+      // Add dynamic element
+      $('#add-dynamic').on('click', function(){
+        $('#dynamic-zone').append(`
+          <div class="copy added">
+            clicca qui <cc-text>Dinamico! 🎉</cc-text>
+          </div>
+        `);
+      });
+    });
+  </script>
+</body>
+</html>
