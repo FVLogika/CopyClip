@@ -21,8 +21,6 @@
   <script src="https://cdn.jsdelivr.net/gh/FVLogika/CopyClip/copyclip.min.js"></script>
 
   <style>
-    cc-text { display: none; }
-    .copy { cursor: pointer; }
     .hidden { display: none; }
     .added { margin-top: 1rem; }
     #lang-switch label { font-weight: bold; }
@@ -49,9 +47,9 @@
           <i class="fas fa-key"></i> Codice segreto
           <cc-text>IT-ABC123</cc-text>
         </button>
-        <p><span class="copy text-info text-decoration-underline">
+        <p>paragrafo di testo con span <span class="copy text-info text-decoration-underline">
           <i class="fas fa-mouse-pointer"></i> clicca qui <cc-text>IT-Testo nascosto</cc-text>
-        </span></p>
+        </span> cliccabile.</p>
         <p class="text-muted">Paragrafo non cliccabile: <cc-text>non copiabile</cc-text></p>
       </div>
     </div>
@@ -66,9 +64,9 @@
           <i class="fas fa-key"></i> Secret code
           <cc-text>EN-ABC123</cc-text>
         </button>
-        <p><span class="copy text-info text-decoration-underline">
+        <p>text paragraph with a clickable <span class="copy text-info text-decoration-underline">
           <i class="fas fa-mouse-pointer"></i> click here <cc-text>EN-hidden text</cc-text>
-        </span></p>
+        </span> span element.</p>
         <h5 class="text-muted">Heading (not clickable): <cc-text>not copyable</cc-text></h5>
       </div>
     </div>
