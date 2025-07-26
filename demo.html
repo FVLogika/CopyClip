@@ -2,68 +2,119 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>CopyClip Demo Bilingue</title>
+  <title>CopyClip + stackAlert Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome 6 -->
+  <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css" rel="stylesheet">
+
+  <!-- stackAlert plugin -->
+  <script src="https://cdn.jsdelivr.net/gh/FVLogika/stackAlert/stackAlert.min.js"></script>
+
+  <!-- jQuery + CopyClip -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/FVLogika/CopyClip/copyclip.min.js"></script>
+
   <style>
-    body { font-family: sans-serif; margin: 2em; }
-    .copy { cursor: pointer; color: blue; text-decoration: underline; }
-    #lang-switch { margin-bottom: 1em; }
+    cc-text { display: none; }
+    .copy { cursor: pointer; }
     .hidden { display: none; }
-    .added { margin-top: 1em; padding: 0.5em; background: #f0f0f0; }
+    .added { margin-top: 1rem; }
+    #lang-switch label { font-weight: bold; }
+    body { padding-bottom: 3rem; }
   </style>
 </head>
 <body>
 
-  <label id="lang-switch">
-    <input type="checkbox" id="toggle-lang" /> Italiano / English
-  </label>
+<div class="container my-5">
+  <div class="text-center mb-4">
+    <h1 class="mb-3">CopyClip Demo <i class="fas fa-copy"></i></h1>
+    <div id="lang-switch" class="form-check form-switch d-inline-block">
+      <input class="form-check-input" type="checkbox" id="toggle-lang">
+      <label class="form-check-label" for="toggle-lang">Italiano / English</label>
+    </div>
+  </div>
 
-  <!-- Italian Section -->
+  <!-- ITA -->
   <div id="content-it">
-    <h2>Esempi Copia (IT)</h2>
-    <button class="copy">Codice segreto <cc-text>IT-ABC123</cc-text></button>
-    <span class="copy">clicca qui <cc-text>IT-Testo nascosto</cc-text></span>
-    <p>Questo è un paragrafo <cc-text>non copiabile</cc-text></p>
+    <div class="card mb-4">
+      <div class="card-header bg-primary text-white">Esempi di copia (IT)</div>
+      <div class="card-body">
+        <button class="btn btn-primary copy mb-2">
+          <i class="fas fa-key"></i> Codice segreto
+          <cc-text>IT-ABC123</cc-text>
+        </button>
+        <p><span class="copy text-info text-decoration-underline">
+          <i class="fas fa-mouse-pointer"></i> clicca qui <cc-text>IT-Testo nascosto</cc-text>
+        </span></p>
+        <p class="text-muted">Paragrafo non cliccabile: <cc-text>non copiabile</cc-text></p>
+      </div>
+    </div>
   </div>
 
-  <!-- English Section -->
+  <!-- ENG -->
   <div id="content-en" class="hidden">
-    <h2>Copy Examples (EN)</h2>
-    <button class="copy">Secret code <cc-text>EN-ABC123</cc-text></button>
-    <span class="copy">click here <cc-text>EN-hidden text</cc-text></span>
-    <h1>This is a heading <cc-text>not copyable</cc-text></h1>
+    <div class="card mb-4">
+      <div class="card-header bg-success text-white">Copy Examples (EN)</div>
+      <div class="card-body">
+        <button class="btn btn-success copy mb-2">
+          <i class="fas fa-key"></i> Secret code
+          <cc-text>EN-ABC123</cc-text>
+        </button>
+        <p><span class="copy text-info text-decoration-underline">
+          <i class="fas fa-mouse-pointer"></i> click here <cc-text>EN-hidden text</cc-text>
+        </span></p>
+        <h5 class="text-muted">Heading (not clickable): <cc-text>not copyable</cc-text></h5>
+      </div>
+    </div>
   </div>
 
-  <button id="add-dynamic">➕ Aggiungi elemento dinamico</button>
-  <div id="dynamic-zone"></div>
+  <div class="text-center">
+    <button id="add-dynamic" class="btn btn-outline-secondary">
+      <i class="fas fa-plus-circle"></i> Aggiungi elemento dinamico
+    </button>
+    <div id="dynamic-zone" class="mt-3"></div>
+  </div>
+</div>
 
-  <script>
-    // Initialize CopyClip
-    $(function(){
-      $.fn.CopyClip({
-        onCopy: function(text, el) {
-          alert('Testo copiato: ' + text);
-        },
-        onError: function(err, el) {
-          console.error('Errore di copia:', err);
-        }
-      });
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-      // Language switch
-      $('#toggle-lang').on('change', function() {
-        $('#content-it, #content-en').toggleClass('hidden');
-      });
-
-      // Add dynamic element
-      $('#add-dynamic').on('click', function(){
-        $('#dynamic-zone').append(`
-          <div class="copy added">
-            clicca qui <cc-text>Dinamico! 🎉</cc-text>
-          </div>
-        `);
-      });
+<script>
+  $(function(){
+    $.fn.CopyClip({
+      onCopy: function(text, el) {
+        $.fn.stackAlert({
+          text: 'Testo copiato: ' + text,
+          theme: 'success',
+          icon: 'fa-check-circle'
+        });
+      },
+      onError: function(err, el) {
+        $.fn.stackAlert({
+          text: 'Errore copia: ' + err,
+          theme: 'danger',
+          icon: 'fa-exclamation-circle'
+        });
+      }
     });
-  </script>
+
+    $('#toggle-lang').on('change', function() {
+      $('#content-it, #content-en').toggleClass('hidden');
+    });
+
+    $('#add-dynamic').on('click', function(){
+      $('#dynamic-zone').append(`
+        <div class="copy alert alert-info added">
+          <i class="fas fa-magic"></i> clicca qui <cc-text>Dinamico! 🎉</cc-text>
+        </div>
+      `);
+    });
+  });
+</script>
+
 </body>
 </html>
