@@ -6,27 +6,23 @@
 	'use strict';
 
 	/**
-	 * Verifica se esiste già nel documento una regola CSS per il tag custom.
-	 * Serve a non duplicare l'iniezione dello style.
+	 * Verifica se esiste già una regola CSS per uno specifico selettore.
+	 * Evita duplicazioni nella iniezione di <style>.
 	 *
-	 * @param {String} tagName Nome del tag custom (es: 'cc-text')
-	 * @returns {Boolean} true se trova almeno una regola per quel tag, false altrimenti
+	 * @param {String} selector - selettore CSS da cercare (es: '.copy' o 'cc-text')
+	 * @returns {Boolean}
 	 */
-	function cssTagExists(tagName) {
-		// Scorri tutti gli styleSheet caricati in pagina
+	function cssRuleExists(selector) {
 		for (var i = 0; i < document.styleSheets.length; i++) {
 			var sheet = document.styleSheets[i];
 			var rules;
-			// Cross-origin stylesheet possono lanciare eccezioni su .cssRules
 			try {
 				rules = sheet.cssRules || sheet.rules;
 			} catch (e) {
-				continue;
+				continue; // fogli CORS
 			}
-			// Controlla ogni regola per vedere se selettore contiene il nostro tag
 			for (var j = 0; j < rules.length; j++) {
-				var selector = rules[j].selectorText;
-				if (selector && selector.indexOf(tagName) !== -1) {
+				if (rules[j].selectorText === selector) {
 					return true;
 				}
 			}
@@ -35,18 +31,18 @@
 	}
 
 	/**
-	 * Inietta dinamicamente un tag <style> in <head> per nascondere il tag custom.
-	 * Usa cssTagExists per non duplicare l’iniezione.
+	 * Inietta dinamicamente un tag <style> in <head> con la regola CSS richiesta.
+	 * Chiamala per ogni selettore + dichiarazione da applicare.
 	 *
-	 * @param {String} tagName Nome del tag custom da nascondere
+	 * @param {String} selector - selettore CSS (es: 'cc-text' o '.copy')
+	 * @param {String} declaration - dichiarazione CSS (es: 'display: none !important;')
 	 */
-	function injectTagStyle(tagName) {
-		if (cssTagExists(tagName)) {
-			return; // già presente, non faccio nulla
+	function injectStyleRule(selector, declaration) {
+		if (cssRuleExists(selector)) {
+			return;
 		}
-		var css = tagName + " { display: none !important; }";
+		var css = selector + " { " + declaration + " }";
 		var style = document.createElement('style');
-		style.id = 'copyClipStyles';
 		style.type = 'text/css';
 		style.appendChild(document.createTextNode(css));
 		document.head.appendChild(style);
@@ -69,11 +65,12 @@
 		// Unisci le opzioni utente con i default
 		var settings = $.extend({}, $.fn.CopyClip.defaults, options);
 
-		// Inietta lo stile per nascondere il tag custom
-		injectTagStyle(settings.tag);
+		// inietta i due stili di default
+		injectStyleRule(settings.tag, "display: none !important;");
+		injectStyleRule(settings.selector, "cursor: pointer !important;");
 
-		// Delegazione: intercetta il click sul container (es. document o elemento specifico)
-		this.on('click', settings.selector, function(event) {
+		// Delegazione su document: anche elementi creati dinamicamente
+		$(document).on('click.CopyClip', settings.selector, function(event) {
 			// Previeni comportamento default (utile per <a>, ecc.)
 			event.preventDefault();
 
