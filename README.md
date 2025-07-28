@@ -7,7 +7,7 @@ Repository: https://github.com/FVLogika/CopyClip
 
 ## Descrizione:
 CopyClip è un plugin jQuery leggero e modulare che consente di copiare in automatico
-contenuti testuali nascosti da un tag custom (di default <cc-text>) al clipboard
+contenuti testuali nascosti da un tag custom (default ```<cc-text>```) al clipboard
 tramite click su elementi trigger. L'iniezione dei CSS e l'uso della delegazione
 degli eventi lo rendono compatibile anche con elementi generati dinamicamente
 dopo l'inizializzazione.
